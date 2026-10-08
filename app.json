@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "fitness-tracker",
-    "slug": "fitness-tracker",
+    "name": "My Fitness Tracker",
+    "slug": "my-fitness-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.myfitness.tracker"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,6 +21,31 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "fitnesstracker",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose meal photos and progress photos.",
+          "cameraPermission": "Take meal photos and progress photos.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Read your steps, weight and workouts to calculate calories burned.",
+          "NSHealthUpdateUsageDescription": false,
+          "background": false
+        }
+      ]
+    ]
   }
 }
