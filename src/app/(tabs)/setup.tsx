@@ -112,7 +112,7 @@ export default function Setup() {
       {p ? (
         <Card>
           <H right={<Switch value={!!p.healthSync} onValueChange={toggleHealth} disabled={!hkOk} />}>Apple Health</H>
-          <T muted size={14}>{hkOk ? 'Reads steps, weigh-ins and workouts automatically when you open the app. Values you type in yourself take priority.' : 'Apple Health is not available in this build. It needs the installed app, not Expo Go.'}</T>
+          <T muted size={14}>{hkOk ? 'Reads steps, weigh-ins and workouts automatically when you open the app. Values you type in yourself take priority.' : 'Not included in this build. Apple Health needs a paid Apple Developer account; until then, enter steps and weight on the Today tab.'}</T>
           {p.healthSync ? <Btn title={syncing ? 'Syncing…' : 'Sync now'} disabled={syncing} onPress={async () => { try { setMsg(await syncNow()); } catch (e) { setMsg(e instanceof Error ? e.message : 'Sync failed.'); } }} /> : null}
         </Card>
       ) : null}

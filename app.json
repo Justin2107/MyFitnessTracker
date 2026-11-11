@@ -8,7 +8,7 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.myfitness.tracker"
+      "bundleIdentifier": "com.justin2107.fitnesstracker"
     },
     "android": {
       "adaptiveIcon": {

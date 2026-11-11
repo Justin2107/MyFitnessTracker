@@ -1,6 +1,7 @@
 // Apple Health: read daily steps, weigh-ins and workouts, and merge them into day records.
 // Values you type in yourself always win over Apple Health for that day.
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import {
   isHealthDataAvailableAsync,
   requestAuthorization,
@@ -18,8 +19,11 @@ const READ = [
   'HKWorkoutTypeIdentifier',
 ] as const;
 
+/** False when the app was built without Apple Health (free Apple ID). */
+export const healthBuilt = Constants.expoConfig?.extra?.appleHealth === true;
+
 export async function healthAvailable() {
-  if (Platform.OS !== 'ios') return false;
+  if (Platform.OS !== 'ios' || !healthBuilt) return false;
   try { return await isHealthDataAvailableAsync(); } catch { return false; }
 }
 

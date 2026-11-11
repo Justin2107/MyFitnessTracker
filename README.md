@@ -11,35 +11,44 @@ An iPhone app for tracking calories eaten and burned, training, steps, weight an
 
 All data is stored on the phone in SQLite. Use **Setup → Export backup** to save a copy to iCloud Drive or Files.
 
-## Install on your iPhone
+## Install on your iPhone (free, with a Mac)
 
-You need a computer with [Node.js](https://nodejs.org) (LTS version) and an [Apple Developer Program](https://developer.apple.com/programs/) membership (paid, yearly). No Mac is required; Expo builds the app in the cloud.
+You need a Mac with Xcode and Node.js (LTS). A free Apple ID works; the trade-off is that the app must be reinstalled from your Mac every 7 days. Your data stays on the phone between reinstalls, as long as you don't delete the app.
 
-1. **Get the code and install packages**
+One-time setup:
+
+1. Install **Xcode** from the Mac App Store, open it once to finish installing, then sign in with your Apple ID under **Xcode → Settings → Accounts**.
+2. Install **Node.js** (LTS) from [nodejs.org](https://nodejs.org) and **CocoaPods** with `brew install cocoapods`.
+3. On your iPhone, turn on **Settings → Privacy & Security → Developer Mode** and restart it.
+4. Get the code and generate the iOS project:
    ```sh
-   git clone https://github.com/<you>/<repo>.git
-   cd <repo>
+   git clone https://github.com/Justin2107/MyFitnessTracker.git
+   cd MyFitnessTracker
    npm install
+   npx expo prebuild --platform ios
+   open ios/*.xcworkspace
    ```
-2. **Set a unique app ID.** In `app.json`, change `ios.bundleIdentifier` from `com.myfitness.tracker` to something unique to you, for example `com.yourname.fitnesstracker`.
-3. **Create a free Expo account** at [expo.dev](https://expo.dev), then log in:
-   ```sh
-   npx eas-cli@latest login
-   npx eas-cli@latest init
-   ```
-4. **Build and send to TestFlight** (one command; it signs in to your Apple account, creates certificates and the App Store Connect record for you):
-   ```sh
-   npx testflight
-   ```
-   The cloud build takes roughly 10 to 20 minutes. Apple then processes it before it appears in TestFlight.
-5. **Install** the TestFlight app from the App Store on your iPhone, sign in with the same Apple ID, and install My Fitness Tracker from there.
+5. In Xcode, click the project in the left sidebar → target **MyFitnessTracker** → **Signing & Capabilities** → set **Team** to your name (Personal Team).
 
-To ship an update later, run `npx testflight` again and update the app in TestFlight.
+Install (and repeat every 7 days):
+
+```sh
+npx expo run:ios --device --configuration Release
+```
+
+Plug in your iPhone, pick it from the list, and wait for the build. The first time, the iPhone will block the app: go to **Settings → General → VPN & Device Management**, tap your Apple ID, then **Trust**.
+
+### Apple Health (paid account only)
+
+Reading steps, weight and workouts from Apple Health needs the HealthKit entitlement, which only a paid [Apple Developer Program](https://developer.apple.com/programs/) membership can sign, so it is left out of the default build. With a paid account:
+
+- **From your Mac:** `APPLE_HEALTH=1 npx expo prebuild --platform ios --clean`, then install as above.
+- **Or via TestFlight** (no 7-day expiry): `npx testflight`. The EAS build profiles in `eas.json` turn Apple Health on.
 
 ## First run
 
 1. **Setup tab:** tap **Import backup** and choose the JSON file exported from the web version (Setup → Export JSON there). Or fill in your profile if you're starting fresh.
-2. **Apple Health:** turn it on in Setup and allow steps, weight and workouts.
+2. **Apple Health** (paid-account builds only): turn it on in Setup and allow steps, weight and workouts.
 3. **Food estimates:** paste your Anthropic API key (from [console.anthropic.com](https://console.anthropic.com)) in Setup. Each estimate is billed to your Anthropic account.
 
 ## Develop
